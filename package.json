@@ -1,0 +1,15 @@
+{
+  "name": "apple-documentation-archive-scraper",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "get-stream": "^5.1.0",
+    "jsdom": "^15.2.0",
+    "node-fetch": "^2.6.0",
+    "wkhtmltopdf": "^0.3.4"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.3"
+  }
+}
