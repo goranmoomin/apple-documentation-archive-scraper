@@ -5,11 +5,11 @@
   "license": "MIT",
   "dependencies": {
     "get-stream": "^5.1.0",
-    "jsdom": "^15.2.0",
+    "jsdom": "^16.2.1",
     "node-fetch": "^2.6.0",
     "wkhtmltopdf": "^0.3.4"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.3"
+    "@types/node-fetch": "^2.5.5"
   }
 }
