@@ -1,6 +1,7 @@
 const fs = require("fs").promises;
 const { URL } = require("url");
 const fetch = require("node-fetch");
+const log = require("npmlog");
 const { JSDOM } = require("jsdom");
 const wkhtmltopdf = require("wkhtmltopdf");
 const getStream = require("get-stream");
@@ -12,14 +13,15 @@ const bookURL = new URL("Cocoa/Conceptual/CocoaViewsGuide/", baseURL);
     const toc = await (await fetch(new URL("book.json", bookURL))).json();
     await Promise.all(toc.sections.filter(({ title }) => title !== "Revision History").map(async ({ href, title }) => {
         const sectionURL = new URL(href, bookURL);
-        console.log(`Loading article '${title}'...`);
+        log.info(`Loading article '${title}'...`);
         const { window: section } = await JSDOM.fromURL(sectionURL, {
             resources: "usable"
         });
+        log.info(`Constructed DOM tree for article '${title}'`);
 
         section.addEventListener("load", async () => {
-            console.log(`Finished loading article '${title}'`);
-            console.log(`Generating '${title}.pdf'...`);
+            log.info(`Finished loading article '${title}'`);
+            log.info(`Generating '${title}.pdf'...`);
             const articleHTML = section.document.querySelector("article").innerHTML;
             const styleSheets = [...section.document.styleSheets];
             const cssRules = styleSheets.reduce((acc, cur) => [...acc, ...cur.cssRules], []);
@@ -38,7 +40,7 @@ const bookURL = new URL("Cocoa/Conceptual/CocoaViewsGuide/", baseURL);
             section.close();
             pdfDom.window.close();
             await fs.writeFile(`${title}.pdf`, pdf);
-            console.log(`Finished generating ${title}.pdf`);
+            log.info(`Finished generating '${title}.pdf'`);
         });
     }));
 })();
